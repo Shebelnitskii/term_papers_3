@@ -1,4 +1,5 @@
 import requests
+import datetime
 
 def load_json():
     ''' функция выгрузки json'''
@@ -6,7 +7,7 @@ def load_json():
     return transactions_json
 
 def transactions_executed():
-    ''' функция перебора json и нахождение успешных операций'''
+    ''' функция перебора json и нахождение успешных операций игнорируя пустых записей в Json'''
     data = load_json()
     data_executed = []
     for i in range(len(data)):
@@ -16,3 +17,11 @@ def transactions_executed():
         except:
             continue
     return data_executed
+
+#'%y-%m-%dT%H:%M:%S.%f'
+
+def sort_by_date():
+    ''' Сортировка списка выполненых операций по дате'''
+    data_executed = transactions_executed()
+    sort_name = sorted(data_executed, key=lambda x: datetime.datetime.fromisoformat(x['date']))
+    return sort_name
