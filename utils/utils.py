@@ -3,8 +3,11 @@ import datetime
 
 def load_json():
     ''' функция выгрузки json'''
-    with open('C://Users/Шебельницкие/PycharmProjects/term_papers_3/operations.json', 'r', encoding='utf-8') as f:
-        return json.load(f)
+    try:
+        with open('C://Users/Шебельницкие/PycharmProjects/term_papers_3/operations.json', 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except:
+        return 'ошибка файла'
 
 def transactions_executed():
     ''' функция перебора json и нахождение успешных операций игнорируя пустых записей в Json'''
