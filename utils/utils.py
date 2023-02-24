@@ -46,7 +46,8 @@ def hidden_account_from(operation_sort, number):
             else:
                 hidden_account += split_from[1][i]
         ### Вывод информации после переборки текста split_from[0] Это Maestro/MasterCard, hidden_account разделяется по 4-е символа
-        return print(split_from[0],hidden_account[:4],hidden_account[4:8],hidden_account[8:12],hidden_account[12:16],hidden_account[16:20],end = '-> ')
+        hidden_output = split_from[0] + ' ' + hidden_account[:4] + ' ' + hidden_account[4:8] + ' ' + hidden_account[8:12] + ' ' + hidden_account[12:16] + ' ' + hidden_account[16:20]
+        return hidden_output
 
     elif split_from[0].lower() == "visa":
         ### если в первом индекск после сплита стоит Visa то второй индекс будет Gold/platinum и тд, по этому перебор номера счёта идёт по индексу 2
@@ -55,7 +56,9 @@ def hidden_account_from(operation_sort, number):
                 hidden_account += split_from[2][i].replace(split_from[2][i], '*')
             else:
                 hidden_account += split_from[2][i]
-        return print(split_from[0],split_from[1],hidden_account[:4],hidden_account[4:8],hidden_account[8:12],hidden_account[12:16],hidden_account[16:20],end = '-> ')
+        hidden_output = split_from[0] + ' ' + split_from[1] + ' ' + hidden_account[:4] + ' ' + hidden_account[4:8] + ' ' + hidden_account[8:12] + ' ' + hidden_account[12:16] + ' ' + hidden_account[16:20]
+        return hidden_output
+
     else:
         ### в последнем случае это номер счёта, в котором 20 символов, и соответсветсвенно показываются последние 6 символов
         for i in range(len(split_from[1])):
@@ -64,48 +67,49 @@ def hidden_account_from(operation_sort, number):
             else:
                 hidden_account += split_from[1][i]
         ### Вывод последних 6-ти символов, при этом первые 16 из 20 символов заменены на звёздочку
-        return print(split_from[0], hidden_account[-6:],end = ' -> ')
-
-def hidden_account_to(operation_sort, number):
-    ''' Вывод информации куда был выполнен перевод и скрытие информации о номере в зависимости от типа счёта(Visa,MasterCard и т.д.)'''
-    split_to = operation_sort[number]['to'].split() ### Разделение to по пробелу
-    hidden_account = ''  ### Пустая строка в которую после перебора добавятся нужные символы в зависимости от кол-ва символов в номере счёта
-
-    if split_to[0].lower() == "maestro" or split_to[0].lower() == 'mastercard':
-        ### проверка по первому значению списка после split
-
-        for i in range(len(split_to[1])):
-            if i in range(6, 12): ### Все символы с 6-го по 12 заменяются на *
-                hidden_account += split_to[1][i].replace(split_to[1][i], '*')
-            else:
-                hidden_account += split_to[1][i]
-        ### Вывод информации после переборки текста split_from[0] Это Maestro/MasterCard, hidden_account разделяется по 4-е символа
-        return print(split_to[0], hidden_account[:4], hidden_account[4:8], hidden_account[8:12], hidden_account[12:16],hidden_account[16:20])
-
-    elif split_to[0].lower() == "visa":
-        ### если в первом индекск после сплита стоит Visa то второй индекс будет Gold/platinum и тд, по этому перебор номера счёта идёт по индексу 2
-        for i in range(len(split_to[2])):
-            if i in range(6, 12):
-                hidden_account += split_to[2][i].replace(split_to[2][i], '*')
-            else:
-                hidden_account += split_to[2][i]
-        return print(split_to[0], split_to[1], hidden_account[:4], hidden_account[4:8], hidden_account[8:12], hidden_account[12:16],
-                     hidden_account[16:20])
-    else:
-        ### в последнем случае это номер счёта, в котором 20 символов, и соответсветсвенно показываются последние 6 символов
-        for i in range(len(split_to[1])):
-            if i in range(0, 16):
-                hidden_account += split_to[1][i].replace(split_to[1][i], '*')
-            else:
-                hidden_account += split_to[1][i]
-        ### Вывод последних 6-ти символов, при этом первые 16 из 20 символов заменены на звёздочку
-        return print(split_to[0], hidden_account[-6:])
-
-def date_output(operation_sort, number):
-    ''' Вывод информации о дате операции в формате ДД.ММ.ГГГГ '''
-    date = datetime.datetime.fromisoformat(operation_sort[number]['date']).date()
-    return print(f"{date.day}.{date.month}.{date.year} {operation_sort[number]['description']}")
-
-def transfer_amount_currency(operation_sort, number):
-    ''' Вывод информации о сумме и валюте операции '''
-    return print(f'{operation_sort[number]["operationAmount"]["amount"]} {operation_sort[number]["operationAmount"]["currency"]["name"]}\n')
+        hidden_output = split_from[0] + ' ' + hidden_account[-6:]
+        return hidden_output
+#
+# def hidden_account_to(operation_sort, number):
+#     ''' Вывод информации куда был выполнен перевод и скрытие информации о номере в зависимости от типа счёта(Visa,MasterCard и т.д.)'''
+#     split_to = operation_sort[number]['to'].split() ### Разделение to по пробелу
+#     hidden_account = ''  ### Пустая строка в которую после перебора добавятся нужные символы в зависимости от кол-ва символов в номере счёта
+#
+#     if split_to[0].lower() == "maestro" or split_to[0].lower() == 'mastercard':
+#         ### проверка по первому значению списка после split
+#
+#         for i in range(len(split_to[1])):
+#             if i in range(6, 12): ### Все символы с 6-го по 12 заменяются на *
+#                 hidden_account += split_to[1][i].replace(split_to[1][i], '*')
+#             else:
+#                 hidden_account += split_to[1][i]
+#         ### Вывод информации после переборки текста split_from[0] Это Maestro/MasterCard, hidden_account разделяется по 4-е символа
+#         return print(split_to[0], hidden_account[:4], hidden_account[4:8], hidden_account[8:12], hidden_account[12:16],hidden_account[16:20])
+#
+#     elif split_to[0].lower() == "visa":
+#         ### если в первом индекск после сплита стоит Visa то второй индекс будет Gold/platinum и тд, по этому перебор номера счёта идёт по индексу 2
+#         for i in range(len(split_to[2])):
+#             if i in range(6, 12):
+#                 hidden_account += split_to[2][i].replace(split_to[2][i], '*')
+#             else:
+#                 hidden_account += split_to[2][i]
+#         return print(split_to[0], split_to[1], hidden_account[:4], hidden_account[4:8], hidden_account[8:12], hidden_account[12:16],
+#                      hidden_account[16:20])
+#     else:
+#         ### в последнем случае это номер счёта, в котором 20 символов, и соответсветсвенно показываются последние 6 символов
+#         for i in range(len(split_to[1])):
+#             if i in range(0, 16):
+#                 hidden_account += split_to[1][i].replace(split_to[1][i], '*')
+#             else:
+#                 hidden_account += split_to[1][i]
+#         ### Вывод последних 6-ти символов, при этом первые 16 из 20 символов заменены на звёздочку
+#         return print(split_to[0], hidden_account[-6:])
+#
+# def date_output(operation_sort, number):
+#     ''' Вывод информации о дате операции в формате ДД.ММ.ГГГГ '''
+#     date = datetime.datetime.fromisoformat(operation_sort[number]['date']).date()
+#     return print(f"{date.day}.{date.month}.{date.year} {operation_sort[number]['description']}")
+#
+# def transfer_amount_currency(operation_sort, number):
+#     ''' Вывод информации о сумме и валюте операции '''
+#     return print(f'{operation_sort[number]["operationAmount"]["amount"]} {operation_sort[number]["operationAmount"]["currency"]["name"]}\n')
