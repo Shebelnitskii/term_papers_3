@@ -11,9 +11,10 @@ def load_json():
         return 'ошибка файла'
 
 
-def transactions_executed():
+def transactions_executed(data=None):
     ''' функция перебора json и нахождение успешных операций игнорируя пустых записей в Json'''
-    data = load_json()
+    if data == None:
+        data = load_json()
     data_executed = []
     try:
         for i in range(
@@ -29,9 +30,10 @@ def transactions_executed():
         return data_executed
 
 
-def sort_by_date():
+def sort_by_date(data_executed=None):
     ''' Сортировка списка выполненых операций по дате'''
-    data_executed = transactions_executed()
+    if data_executed == None:
+        data_executed = transactions_executed()
     sort_name = sorted(data_executed, key=lambda x: datetime.datetime.fromisoformat(x['date']))
     return sort_name
 
